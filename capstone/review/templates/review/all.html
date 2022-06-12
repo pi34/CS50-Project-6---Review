@@ -1,0 +1,24 @@
+{% extends 'review/layout.html' %}
+
+{% load static %}
+
+{% block script %}
+<script src="{% static 'review/all.js' %}"></script>
+{% endblock %}
+
+{% block app %}
+
+{% if category %}
+<button id="type" value="business" hidden>{{category}}</button> 
+{% if location %}
+<div hidden id="location">{{location}}</div>
+{% endif %}
+{% endif %}
+
+{% if review is True %}
+<button id="type" value="review" hidden>review</button>
+{% endif %}
+
+<dvi id="review-section"></dvi>
+
+{% endblock %}

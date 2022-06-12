@@ -1,0 +1,80 @@
+{% extends 'review/layout.html' %}
+{% load static %}
+
+{% block script %}
+<script src="{% static 'review/new.js' %}"></script> 
+{% endblock %}
+
+{% block app %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card bg-light">
+              <div class="card-body" id={{business.id}}>
+                <h5 class="card-title">{{business.name}}</h5>
+                <a href="{% url 'profile' business.user.username %}" class="card-link">by {{ business.user.username }}</a>
+                {% if business.image %}
+                <img class="img-thumbnail"  src={{business.image.url}}/>
+                {% endif %}
+                <h6 class="card-subtitle mb-2 text-muted">{{business.address}}</h6>
+                <p class="card-text" id=p_{{business.id}}>{{business.description}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                  Reviews
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Write a Review</h5>
+                  <form id="review-form" name="{{ business.id }}">
+                    <div class="form-group">
+                      <label for="review-title">Title</label>
+                      <input class="form-control" id="review-title" placeholder="Title">
+                    </div> 
+                    <div class="form-group">
+                      <label for="review-rating">Rating</label>
+                      <select class="form-control" id="review-rating">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="review-body">Review</label>
+                      <textarea class="form-control" id="review-body" rows="5"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+                </div>
+                <hr>
+                {% for review in business.reviews.all %}
+                <div class="card-body" id={{review.id}}>
+                  <h5 class="card-title">{{ review.title }}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Rating: {{ review.rating }} out of 5</h6>
+                  <p id=p_{{review.id}} class="card-text">{{ review.body }}</p>
+                  <a href="{% url 'profile' review.user.username %}" class="card-link">by {{ review.user.username }}</a>
+                  {% if request.user == review.user %}
+                  <button id=edit_{{review.id}} class="btn btn-outline-info edit review">Edit</button>
+                  {% else %}
+                  {% if request.user in review.likes.all %}
+                  <button value={{review.id}} id=l_{{review.id}} style="color: black" class="btn like">
+                  {% else %}
+                  <button value={{review.id}} id=l_{{review.id}} style="color: red" class="btn like">
+                  {% endif %}
+                  <svg xmlns="http://www.w3.org/2000/svg" value={{review.id}} width="16" height="16" fill="currentColor" class="bi bi-heart-fill like" viewBox="0 0 16 16">
+                    <path class="like" fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                </svg></button> {{ review.likes.count }}
+                  {% endif %}
+                </div>
+                <hr>
+                {% empty %}
+                  <p style="margin: 20px">No Reviews Yet.</p>
+                {% endfor %}
+          </div>
+    </div>
+</div>
+{% endblock %}

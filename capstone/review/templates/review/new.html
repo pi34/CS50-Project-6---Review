@@ -1,0 +1,46 @@
+{% extends 'review/layout.html' %}
+{% load static %}
+
+{% block title %}
+New Business
+{% endblock %}
+
+
+{% block app %}
+<form method = "post" enctype="multipart/form-data"> 
+  {% csrf_token %} 
+  {{ form.as_p }} 
+  <button type="submit">Upload</button> 
+</form> 
+{% endblock %}
+<div style="margin-right: 20px; margin-left: 20px">
+  <form id="new">
+    <div class="form-group">
+      <label for="input-name">Name of Business</label>
+      <input class="form-control" id="input-name" placeholder="McDonald's at Riker Street">
+    </div>
+    <div class="form-group">
+      <label for="input-address">Valid Address (Branch)</label>
+      <input class="form-control" id="input-address" placeholder="123 - Main Street, New York, US.">
+    </div>
+    <div class="form-group">
+      <label for="input-category">Category</label>
+      <select class="form-control" id="input-category">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="input-image">Header Image</label>
+      <input type="file" class="form-control-file" id="input-image">
+    </div>
+    <div class="form-group">
+      <label for="input-bio">About (bio)</label>
+      <textarea class="form-control" id="input-bio" rows="5"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
